@@ -1,0 +1,17 @@
+
+
+<input type="file" (change)="onCange($event)" placeholder="請選擇檔案">
+
+<div class="content" role="main"><table>
+  <thead><tr><th>Name</th><th>Index</th></tr></thead>
+  <tbody>
+  @for(row of rows; track $index) {
+    <tr>
+      <td>{{row.Name}}</td>
+      <td>{{row.Index}}</td>
+    </tr>
+  }
+  </tbody><tfoot>
+
+  </tfoot>
+</table></div>
