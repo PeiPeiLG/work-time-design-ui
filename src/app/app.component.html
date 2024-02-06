@@ -1,17 +1,25 @@
+<input type="file" (change)="onChange($event)" placeholder="請選擇檔案" />
 
-
-<input type="file" (change)="onCange($event)" placeholder="請選擇檔案">
-
-<div class="content" role="main"><table>
-  <thead><tr><th>Name</th><th>Index</th></tr></thead>
-  <tbody>
-  @for(row of rows; track $index) {
-    <tr>
-      <td>{{row.Name}}</td>
-      <td>{{row.Index}}</td>
-    </tr>
-  }
-  </tbody><tfoot>
-
-  </tfoot>
-</table></div>
+<div class="content" role="main">
+  <table>
+    <thead>
+      <tr>
+        @for(key of objectKeys; track $index){
+        <th>{{ key }}</th>
+        }@empty {
+        <th>無資料</th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @for(item of dataArray; track $index) {
+      <tr>
+        @for(key of objectKeys; track $index){
+        <td style="padding-left: 10px; padding-right: 10px;">{{ item[key] }}</td>
+        }
+      </tr>
+      }
+    </tbody>
+    <tfoot></tfoot>
+  </table>
+</div>

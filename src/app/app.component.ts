@@ -2,18 +2,21 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import * as XLSX from 'xlsx';
-interface President { Name: string; Index: number };
+interface President {
+  Name: string;
+  Index: number;
+}
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
 })
 export class AppComponent {
   title = 'work-time-design-ui';
 
-  rows: President[] = [ { Name: "SheetJS", Index: 0 }];
+  dataArray: any[] = [];
 
   // ngOnInit(): void { (async() => {
   //   /* Download from https://sheetjs.com/pres.numbers */
@@ -28,17 +31,20 @@ export class AppComponent {
 
   // })(); }
 
-  onCange(event: any): void {
-    const target: DataTransfer = <DataTransfer>(event.target);
+  onChange(event: any): void {
+    const target: DataTransfer = <DataTransfer>event.target;
     if (target.files.length !== 1) throw new Error('Cannot use multiple files');
     const reader: FileReader = new FileReader();
     reader.onload = (e: any) => {
       const bstr: string = e.target.result;
-      const wb: XLSX.WorkBook = XLSX.read(bstr, {type: 'binary'});
+      const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
+      console.log('wb', wb);
       const wsname: string = wb.SheetNames[0];
+      console.log('wsname', wsname);
       const ws: XLSX.WorkSheet = wb.Sheets[wsname];
-      const data = XLSX.utils.sheet_to_json(ws, {header: 1});
-      console.log(data);
+      console.log('ws', ws);
+      const data = XLSX.utils.sheet_to_json(ws, { defval: '' });
+      this.dataArray = data as any[];
     };
     reader.readAsBinaryString(target.files[0]);
   }
@@ -49,4 +55,8 @@ export class AppComponent {
   //   utils.book_append_sheet(wb, ws, "Data");
   //   writeFileXLSX(wb, "SheetJSAngularAoO.xlsx");
   // }
+
+  get objectKeys(): string[] {
+    return Object.keys(this.dataArray[0]);
+  }
 }
